@@ -420,6 +420,7 @@ jobs:
           fi
 
       - name: 🔧 Apply Perfect Fengchi SCX (Ace 6)
+        if: ${{ env.ENABLE_SCX == 'true' }}
         run: |
           set -euo pipefail
           cd kernel_workspace
@@ -870,6 +871,18 @@ jobs:
           echo "ccache 状态："
           ccache -s
       
+
+      - name: 🧪 Check hmbird symbols (核对风驰符号)
+        run: |
+          set -euo pipefail
+          cd kernel_workspace/common
+          for s in hmbird_proc_init hmbird_shadow_tick_init scx_systemui_pid tick_hit_params boost_policy_params; do
+            if ! grep -q " $s$" out/System.map; then
+              echo "::error::System.map 缺少 $s"
+              exit 1
+            fi
+            grep " $s$" out/System.map
+          done
 
       - name: 🧪 ABI precheck (刷机前 ABI 预检)
         run: |
