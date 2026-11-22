@@ -70,7 +70,7 @@ python3 tools/dtbo/patch_hmbird_dtbo.py \
 
 ```bash
 strings -a dtbo_hmbird.img | grep -c HMBIRD_OGKI   # 期望 2
-python3 tools/dtbo/patch_hmbird_dtbo.py --input dtbo_hmbird.img --output /tmp/again.img  # 幂等
+python3 tools/dtbo/patch_hmbird_dtbo.py --input dtbo_hmbird.img --output tmp/again.img  # 幂等
 ```
 
 也可以从 `vendor_boot.img` 取出 Sun 基 DTB，用 `fdtoverlay` 叠加单个 `target=<&soc>` fragment，反编译后应看到 `/soc/oplus,hmbird/version_type`。
