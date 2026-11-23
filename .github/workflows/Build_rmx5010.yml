@@ -92,6 +92,8 @@ jobs:
           set -euo pipefail
           bash -n patch/fengchi/apply_ace6_hmbird.sh
           python3 -m py_compile tools/dtbo/patch_hmbird_dtbo.py
+          python3 -m py_compile tools/ak3/strip_credit.py
+          python3 tools/ak3/test_strip_credit.py
 
       - name: ⚙️ Set REPO_MANIFEST (设置对应机型配置文件)
         run: |
@@ -985,6 +987,11 @@ jobs:
           chmod +x main.bin
           ./main.bin "make_anykernel3"
           rm -rf ./main.bin
+
+      - name: 🧹 Strip AK3 install credit (去除 AK3 安装署名)
+        run: |
+          set -euo pipefail
+          python3 "${GITHUB_WORKSPACE}/tools/ak3/strip_credit.py" "$(pwd)/AnyKernel3"
           
       - name: 📤 Upload AnyKernel3 (上传 Anykernel3)
         uses: actions/upload-artifact@v6
